@@ -1,5 +1,6 @@
 
 #include <cassert>
+#include <chrono>
 #include <random>
 #include <vector>
 
@@ -12,7 +13,10 @@ class StringHash {
 public:
   StringHash(int n) : n(n) {
     assert(n > 0);
-    std::default_random_engine e;
+    auto now = std::chrono::system_clock::now();
+    auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+      now.time_since_epoch());
+    std::mt19937 e(ns.count());
     m1 = MULT[e() % MULT_SIZE];
     do {
       m2 = MULT[e() % MULT_SIZE];
@@ -70,7 +74,7 @@ public:
 
 private:
   static const int MULT_SIZE = 9;
-  static constexpr ull MOD[2]{ull(1e9) + 7, ull(1e9) + 27};
+  static constexpr ull MOD[2]{ull(1e9) + 7, ull(1e9) + 9};
   static constexpr ull MULT[9]{131,  157,   293,   1019, 1471,
                                1667, 10037, 13331, 16183};
 
