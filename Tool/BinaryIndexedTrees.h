@@ -10,7 +10,7 @@ public:
   BinaryIndexedTrees(int n) : c(n + 1), n(n) {}
   BinaryIndexedTrees(const vector<T> &a) {
     n = a.size() - 1;
-    c.resize(4 * (n + 1));
+    c.resize((n + 1));
     build(a);
   }
   static int lowbit(int x) {
@@ -32,8 +32,8 @@ public:
   }
 
 private:
-  int n;
   vector<T> c;
+  int n;
 
   void build(const vector<T> &a) {
     for (int i = 1; i <= n; i++) {
@@ -44,5 +44,4 @@ private:
     }
   }
 };
-
 } // namespace Tool

@@ -1,9 +1,28 @@
 
 
 #include <cassert>
+#include <format>
 #include <iostream>
+#include <vector>
+
 using ll = long long;
-namespace Tool {
+
+constexpr ll ex_gcd(ll a, ll b, ll &x, ll &y) {
+  if (b == 0) {
+    x = 1, y = 0;
+    return a;
+  }
+  int r = ex_gcd(a, b, y, x);
+  y -= (a / b) * x;
+  return r;
+}
+
+constexpr ll inv(ll m, const ll mod) {
+  ll x, y;
+  ex_gcd(m, mod, x, y);
+  return (x % mod + mod) % mod;
+}
+
 constexpr ll mul(ll a, ll b, ll p) {
   ll res = a * b - (ll)(1.L * a * b / p) * p;
   res %= p;
@@ -215,4 +234,67 @@ struct MInt {
     return x;
   }
 };
-} // namespace Tool
+
+using Z = MInt<int(1e9 + 7)>;
+
+template <>
+struct std::formatter<Z, char> {
+  bool quoted = false;
+
+  template <class ParseContext>
+  constexpr ParseContext::iterator parse(ParseContext &ctx) {
+    auto it = ctx.begin();
+    return it;
+  }
+
+  template <class FmtContext>
+  FmtContext::iterator format(Z s, FmtContext &ctx) const {
+    return format_to(ctx.out(), "({})", s.x);
+  }
+};
+
+namespace comb {
+int n = 0;
+std::vector<Z> _fac = {1};
+std::vector<Z> _invfac = {1};
+std::vector<Z> _inv = {0};
+
+void init(int m) {
+  if (m <= n)
+    return;
+  _fac.resize(m + 1);
+  _invfac.resize(m + 1);
+  _inv.resize(m + 1);
+
+  for (int i = n + 1; i <= m; i++) {
+    _fac[i] = _fac[i - 1] * Z(i);
+  }
+  _invfac[m] = _fac[m].inv();
+  for (int i = m; i > n; i--) {
+    _invfac[i - 1] = _invfac[i] * Z(i);
+    _inv[i] = _invfac[i] * _fac[i - 1];
+  }
+  n = m;
+}
+
+Z fac(int m) {
+  if (m > n)
+    init(2 * m);
+  return _fac[m];
+}
+Z invfac(int m) {
+  if (m > n)
+    init(2 * m);
+  return _invfac[m];
+}
+Z inv(int m) {
+  if (m > n)
+    init(2 * m);
+  return _inv[m];
+}
+Z binom(int m, int k) {
+  if (m < k || k < 0)
+    return 0;
+  return fac(m) * invfac(k) * invfac(m - k);
+}
+} // namespace comb
