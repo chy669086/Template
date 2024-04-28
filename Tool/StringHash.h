@@ -17,9 +17,9 @@ public:
     auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
       now.time_since_epoch());
     std::mt19937 e(ns.count());
-    m1 = MULT[e() % MULT_SIZE];
+    m1 = MULT[(unsigned)(e()) % MULT_SIZE];
     do {
-      m2 = MULT[e() % MULT_SIZE];
+      m2 = MULT[(unsigned)(e()) % MULT_SIZE];
     } while (m1 == m2);
     init_mult();
   }
