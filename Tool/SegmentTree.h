@@ -46,6 +46,7 @@ public:
   void update(int pos, T k) {
     update(1, pos, pos, 1, n, k);
   }
+
   T query(int l, int r) {
     return query(1, l, r, 1, n);
   }

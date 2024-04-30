@@ -1,9 +1,8 @@
 
 #include <vector>
-using std::vector;
 
 namespace Tool {
-
+using std::vector;
 // 主席树
 template <class T>
 class EXTree {
