@@ -15,7 +15,7 @@ public:
     assert(n > 0);
     auto now = std::chrono::system_clock::now();
     auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-      now.time_since_epoch());
+        now.time_since_epoch());
     std::mt19937 e(ns.count());
     m1 = MULT[(unsigned)(e()) % MULT_SIZE];
     do {
@@ -36,6 +36,7 @@ public:
   vector<std::pair<ull, ull>> get_hash_set(const std::string &s) {
     ull res1 = 0, res2 = 0;
     vector<std::pair<ull, ull>> ans;
+    ans.reserve(s.size());
     for (auto c : s) {
       res1 = (res1 * m1 + c) % MOD[0];
       res2 = (res2 * m2 + c) % MOD[1];
@@ -62,14 +63,15 @@ public:
                                int r1) {
     // 很乱，我也不知道我在写什么
     return {
-      (a1[r1].first + MOD[0] -
-       (l1 == 0 ? 0
-                : a1[l1 - 1].first * pow(m1, r1 + 1 - l1, MOD[0]) % MOD[0])) %
-        MOD[0],
-      (a1[r1].second + MOD[1] -
-       (l1 == 0 ? 0
-                : a1[l1 - 1].second * pow(m2, r1 + 1 - l1, MOD[1]) % MOD[1])) %
-        MOD[1]};
+        (a1[r1].first + MOD[0] -
+         (l1 == 0 ? 0
+                  : a1[l1 - 1].first * pow(m1, r1 + 1 - l1, MOD[0]) % MOD[0])) %
+            MOD[0],
+        (a1[r1].second + MOD[1] -
+         (l1 == 0
+              ? 0
+              : a1[l1 - 1].second * pow(m2, r1 + 1 - l1, MOD[1]) % MOD[1])) %
+            MOD[1]};
   }
 
 private:
