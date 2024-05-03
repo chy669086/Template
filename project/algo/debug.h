@@ -2,14 +2,14 @@
 #include <format>
 #include <iostream>
 
+#define dprint(s, ...) std::cout << std::format(s, ##__VA_ARGS__)
+
 inline void debug(char a) {
   std::cout << a;
 }
 inline void debug(const char *a) {
   std::cout << a;
 }
-
-#define dprint(s, ...) std::cout << std::format(s, ##__VA_ARGS__)
 
 template <typename T>
 void debug(const T &a) {
