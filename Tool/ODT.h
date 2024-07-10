@@ -1,6 +1,6 @@
 
 #include <set>
-using ll = long long;
+using i64 = long long;
 
 template <class T = int, class P = int>
 class ODT {
@@ -16,10 +16,10 @@ public:
     s.insert(node(l, r, x));
   }
 
-  ll query_sum(T l, T r) {
+  i64 query_sum(T l, T r) {
     auto itr = split(r + 1);
     auto itl = split(l);
-    ll res = 0;
+    i64 res = 0;
     for (auto i = itl; i != itr; i++) {
       res += i->val * (i->r - i->l + 1);
     }

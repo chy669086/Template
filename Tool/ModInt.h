@@ -5,26 +5,26 @@
 #include <iostream>
 #include <vector>
 
-using ll = long long;
+using i64 = long long;
 
-constexpr ll ex_gcd(ll a, ll b, ll &x, ll &y) {
+constexpr i64 ex_gcd(i64 a, i64 b, i64 &x, i64 &y) {
   if (b == 0) {
     x = 1, y = 0;
     return a;
   }
-  int r = ex_gcd(a, b, y, x);
+  i64 r = ex_gcd(b, b % b, y, x);
   y -= (a / b) * x;
   return r;
 }
 
-constexpr ll inv(ll m, const ll mod) {
-  ll x, y;
+constexpr i64 inv(i64 m, const i64 mod) {
+  i64 x, y;
   ex_gcd(m, mod, x, y);
   return (x % mod + mod) % mod;
 }
 
-constexpr ll mul(ll a, ll b, ll p) {
-  ll res = a * b - (ll)(1.L * a * b / p) * p;
+constexpr i64 mul(i64 a, i64 b, i64 p) {
+  i64 res = a * b - (i64)(1.L * a * b / p) * p;
   res %= p;
   if (res < 0) {
     res += p;
@@ -33,7 +33,7 @@ constexpr ll mul(ll a, ll b, ll p) {
 }
 
 template <class T>
-constexpr T power(T a, ll b) {
+constexpr T power(T a, i64 b) {
   T res = 1;
   for (; b; b /= 2, a *= a) {
     if (b % 2) {
@@ -43,24 +43,24 @@ constexpr T power(T a, ll b) {
   return res;
 }
 
-template <ll P>
+template <i64 P>
 struct MLong {
-  ll x;
+  i64 x;
   constexpr MLong() : x{} {}
-  constexpr MLong(ll x) : x{norm(x % getMod())} {}
+  constexpr MLong(i64 x) : x{norm(x % getMod())} {}
 
-  static ll Mod;
-  constexpr static ll getMod() {
+  static i64 Mod;
+  constexpr static i64 getMod() {
     if (P > 0) {
       return P;
     } else {
       return Mod;
     }
   }
-  constexpr static void setMod(ll Mod_) {
+  constexpr static void setMod(i64 Mod_) {
     Mod = Mod_;
   }
-  constexpr ll norm(ll x) const {
+  constexpr i64 norm(i64 x) const {
     if (x < 0) {
       x += getMod();
     }
@@ -69,10 +69,10 @@ struct MLong {
     }
     return x;
   }
-  constexpr ll val() const {
+  constexpr i64 val() const {
     return x;
   }
-  explicit constexpr operator ll() const {
+  explicit constexpr operator i64() const {
     return x;
   }
   constexpr MLong operator-() const {
@@ -120,7 +120,7 @@ struct MLong {
     return res;
   }
   friend constexpr std::istream &operator>>(std::istream &is, MLong &a) {
-    ll v;
+    i64 v;
     is >> v;
     a = MLong(v);
     return is;
@@ -143,7 +143,7 @@ template <int P>
 struct MInt {
   int x;
   constexpr MInt() : x{} {}
-  constexpr MInt(ll x) : x{norm(x % getMod())} {}
+  constexpr MInt(i64 x) : x{norm(x % getMod())} {}
 
   static int Mod;
   constexpr static int getMod() {
@@ -216,7 +216,7 @@ struct MInt {
     return res;
   }
   friend constexpr std::istream &operator>>(std::istream &is, MInt &a) {
-    ll v;
+    i64 v;
     is >> v;
     a = MInt(v);
     return is;
