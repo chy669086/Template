@@ -17,6 +17,7 @@ std::vector<int> manacher(std::string &s) {
     while (i - r[i] >= 0 && i + r[i] < n && t[i - r[i]] == t[i + r[i]]) {
       r[i] += 1;
     }
+    --r[i];
     if (i + r[i] > j + r[j]) {
       j = i;
     }

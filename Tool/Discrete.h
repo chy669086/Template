@@ -1,12 +1,22 @@
 #include <algorithm>
 #include <vector>
 
+template <typename T>
+  requires requires(T a) {
+    a.begin() - a.end();
+    a.resize(1);
+    std::distance(a.begin(), a.end());
+  }
+inline void unique(T &a) {
+  a.resize(std::distance(std::unique(all(a)), a.begin()));
+}
+
 template <class T, class cmp = std::less<T>>
 class Discrete {
 public:
   Discrete(std::vector<T> &_a, cmp _cp = cmp()) : a(_a), cp(_cp) {
     std::sort(a.begin(), a.end(), cp);
-    a.resize(std::distance(a.begin(), std::unique(a.begin(), a.end())));
+    unique(a);
   }
 
   // value to id
