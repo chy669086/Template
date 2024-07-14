@@ -75,7 +75,7 @@ public:
   }
 
 private:
-  static const int MULT_SIZE = 9;
+  static constexpr int MULT_SIZE = 9;
   static constexpr u64 MOD[2]{u64(1e9) + 7, u64(1e9) + 9};
   static constexpr u64 MULT[9]{131,  157,   293,   1019, 1471,
                                1667, 10037, 13331, 16183};
