@@ -1,18 +1,20 @@
 #include <queue>
 #include <vector>
 
-using ll = long long;
+using i64 = long long;
 using std::vector;
 
 #define all(a) a.begin(), a.end()
+
+namespace Dinic {
 
 namespace Grap {
 
 int tot;
 std::vector<int> head, nxt, ver;
-vector<ll> val;
+vector<i64> val;
 
-inline void add(int x, int y, ll z) {
+inline void add(int x, int y, i64 z) {
   ver[++tot] = y, nxt[tot] = head[x], head[x] = tot, val[tot] = z;
 }
 
@@ -26,10 +28,8 @@ inline void init(int n, int m) {
 
 } // namespace Grap
 
-namespace Dinic {
-
-const ll INF = 0x3f3f3f3f3f3f3f3f;
-vector<ll> d;
+const i64 INF = 0x3f3f3f3f3f3f3f3f;
+vector<i64> d;
 vector<int> now;
 int s, t;
 
@@ -39,6 +39,11 @@ inline void init(int n, int m, int _s, int _t) {
   d.resize(n + 1);
   s = _s;
   t = _t;
+}
+
+inline void add_edge(int x, int y, i64 z) {
+  Grap::add(x, y, z);
+  Grap::add(y, x, 0);
 }
 
 bool bfs() {
@@ -51,7 +56,7 @@ bool bfs() {
     q.pop();
     for (int i = Grap::head[x]; i; i = Grap::nxt[i]) {
       int y = Grap::ver[i];
-      ll w = Grap::val[i];
+      i64 w = Grap::val[i];
       if (d[y] == INF && w > 0) {
         q.push(y);
         d[y] = d[x] + 1;
@@ -61,15 +66,15 @@ bool bfs() {
   return d[t] != INF;
 }
 
-ll dfs(int x, ll sum) {
+i64 dfs(int x, i64 sum) {
   if (x == t) {
     return sum;
   }
-  ll k;
-  ll res = 0;
+  i64 k;
+  i64 res = 0;
   for (int &i = now[x]; i && sum; i = Grap::nxt[i]) {
     int y = Grap::ver[i];
-    ll w = Grap::val[i];
+    i64 w = Grap::val[i];
     if (w > 0 && d[y] == d[x] + 1) {
       k = dfs(y, std::min(sum, w));
       if (k == 0) {
@@ -84,8 +89,8 @@ ll dfs(int x, ll sum) {
   return res;
 }
 
-inline ll dinic() {
-  ll ans = 0;
+inline i64 dinic() {
+  i64 ans = 0;
   while (bfs()) {
     now = Grap::head;
     ans += dfs(s, INF);
