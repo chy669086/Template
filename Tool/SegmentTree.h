@@ -4,81 +4,90 @@
 
 using std::vector;
 
-namespace Tool {
-
-template <class T, class P>
-concept CHANGE = requires(P b) { T(b); };
-
-template <class T>
+template <class Info, class Tag>
 class SegmentTree {
 public:
-  struct node {
-    T x, lazy;
-    int l, r;
-    int len() {
-      return r - l + 1;
-    }
-  };
-
-  SegmentTree(int n) : n(n), tree(4 * (n + 1)) {
-    build(1, 1, n);
+  SegmentTree() {}
+  SegmentTree(int n) {
+    init(n);
+  }
+  template <class T>
+  SegmentTree(vector<T> &a) {
+    init(a);
   }
 
-  // 0 索引要空着
-  template <class P>
-    requires CHANGE<T, P>
-  SegmentTree(const vector<P> &a) {
+  void init(int n) {
+    this->n = n;
+    infos.assign(4 * n + 1, Info{});
+    tags.assign(4 * n + 1, Tag{});
+  }
+
+  template <class T>
+  void init(vector<T> &a) {
     n = a.size() - 1;
-    tree.resize(4 * (n + 1));
-    build(1, 1, n, a);
+    infos.assign(4 * a.size(), Info{});
+    tags.assign(4 * a.size(), Tag{});
+    build(1, 1, a.size() - 1, a);
   }
 
-  // 0 索引要空着
-  template <class P>
-    requires CHANGE<T, P>
-  SegmentTree(const vector<P> &a, int n) : n(n), tree(4 * (n + 1)) {
-    build(1, 1, n, a);
+  void updata(int l, int r, const Tag &tag) {
+    update(1, 1, n, l, r, tag);
   }
 
-  void update(int l, int r, T k) {
-    update(1, l, r, 1, n, k);
-  }
-  void update(int pos, T k) {
-    update(1, pos, pos, 1, n, k);
-  }
-
-  T query(int l, int r) {
-    return query(1, l, r, 1, n);
-  }
-  T query(int pos) {
-    return query(1, pos, pos, 1, n);
+  Info query(int l, int r) {
+    return query(1, 1, n, l, r);
   }
 
 private:
   int n;
-  vector<node> tree;
+  vector<Info> infos;
+  vector<Tag> tags;
 
   void pushup(int z) {
-    tree[z].x = tree[z << 1].x + tree[z << 1 | 1].x;
-  }
-  void pushdown(int z) {
-    T lazy = tree[z].lazy;
-    if (bool(lazy)) {
-      tree[z << 1].lazy += lazy;
-      tree[z << 1].x += lazy * T(tree[z << 1].len());
-      tree[z << 1 | 1].lazy += lazy;
-      tree[z << 1 | 1].x += lazy * T(tree[z << 1 | 1].len());
-      tree[z].lazy = 0;
-    }
+    infos[z] = infos[z << 1] + infos[z << 1 | 1];
   }
 
-  template <class P>
-    requires CHANGE<T, P>
-  void build(int z, int l, int r, const vector<P> &a) {
-    tree[z].l = l;
-    tree[z].r = r;
+  void pushdown(int z) {
+    Tag &tag = tags[z];
+    infos[z << 1].apply(tag);
+    infos[z << 1 | 1].apply(tag);
+    tags[z << 1].apply(tag);
+    tags[z << 1 | 1].apply(tag);
+    tag = Tag{};
+  }
+
+  Info query(int z, int l, int r, int s, int e) {
+    if (l > e || r < s) {
+      return Info{};
+    }
+    if (l >= s && r <= e) {
+      return infos[z];
+    }
+    pushdown(z);
+    int mid = (l + r) >> 1;
+    return query(z << 1, l, mid, s, e) + query(z << 1 | 1, mid + 1, r, s, e);
+  }
+
+  void update(int z, int l, int r, int s, int e, const Tag &tag) {
+    if (l > e || r < s) {
+      return;
+    }
+    if (l >= s && r <= e) {
+      infos[z].apply(tag);
+      tags[z].apply(tag);
+      return;
+    }
+    pushdown(z);
+    int mid = (l + r) >> 1;
+    update(z << 1, l, mid, s, e, tag);
+    update(z << 1 | 1, mid + 1, r, s, e, tag);
+    pushup(z);
+  }
+
+  template <class T>
+  void build(int z, int l, int r, vector<T> &a) {
     if (l == r) {
-      tree[z].x = T(a[l]);
+      infos[z] = Info{a[l]};
       return;
     }
     int mid = (l + r) >> 1;
@@ -86,43 +95,23 @@ private:
     build(z << 1 | 1, mid + 1, r, a);
     pushup(z);
   }
+};
 
-  void build(int z, int l, int r) {
-    tree[z].l = l;
-    tree[z].r = r;
-    if (l == r) {
-      return;
-    }
-    int mid = (l + r) >> 1;
-    build(z << 1, l, mid);
-    build(z << 1 | 1, mid + 1, r);
-    pushup(z);
-  }
-  void update(int z, int s, int e, int l, int r, T k) {
-    if (l > e || r < s) {
-      return;
-    }
-    if (l >= s && r <= e) {
-      tree[z].lazy += k;
-      tree[z].x += T(r - l + 1) * k;
-      return;
-    }
-    pushdown(z);
-    int mid = (l + r) >> 1;
-    update(z << 1, s, e, l, mid, k);
-    update(z << 1 | 1, s, e, mid + 1, r, k);
-    pushup(z);
-  }
-  T query(int z, int s, int e, int l, int r) {
-    if (l > e || r < s) {
-      return 0;
-    }
-    if (l >= s && r <= e) {
-      return tree[z].x;
-    }
-    pushdown(z);
-    int mid = (l + r) >> 1;
-    return query(z << 1, s, e, l, mid) + query(z << 1 | 1, s, e, mid + 1, r);
+struct Tag {
+  i64 x;
+  void apply(const Tag &tag) {
+    x += tag.x;
   }
 };
-} // namespace Tool
+
+struct Info {
+  i64 x;
+  i64 len = 1;
+  void apply(const Tag &tag) {
+    x += tag.x * len;
+  }
+};
+
+Info operator+(const Info &a, const Info &b) {
+  return {a.x + b.x, a.len + b.len};
+}
