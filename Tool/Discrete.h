@@ -8,7 +8,7 @@ template <typename T>
     std::distance(a.begin(), a.end());
   }
 inline void unique(T &a) {
-  a.resize(std::distance(std::unique(all(a)), a.begin()));
+  a.resize(std::distance(a.begin(), std::unique(all(a))));
 }
 
 template <class T, class cmp = std::less<T>>
