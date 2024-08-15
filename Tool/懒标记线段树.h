@@ -20,6 +20,7 @@ public:
     this->n = n;
     infos.assign(4 * n + 1, Info{});
     tags.assign(4 * n + 1, Tag{});
+    build(1, 1, n);
   }
 
   template <class T>
@@ -93,6 +94,17 @@ private:
     int mid = (l + r) >> 1;
     build(z << 1, l, mid, a);
     build(z << 1 | 1, mid + 1, r, a);
+    pushup(z);
+  }
+
+  void build(int z, int l, int r) {
+    if (l == r) {
+      infos[z] = Info{};
+      return;
+    }
+    int mid = (l + r) >> 1;
+    build(z << 1, l, mid);
+    build(z << 1 | 1, mid + 1, r);
     pushup(z);
   }
 };

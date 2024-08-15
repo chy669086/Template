@@ -1,15 +1,4 @@
 
-#include <cassert>
-#include <chrono>
-#include <cstdint>
-#include <random>
-#include <vector>
-
-using std::vector;
-using u64 = std::uint64_t;
-
-namespace Tool {
-
 class StringHash {
 public:
   StringHash(int n) : n(n) {
@@ -97,4 +86,3 @@ private:
     return mod == MOD[0] ? mult[y].first : mult[y].second;
   }
 };
-} // namespace Tool

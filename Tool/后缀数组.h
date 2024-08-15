@@ -1,8 +1,3 @@
-#include <cmath>
-#include <string>
-#include <vector>
-
-#define all(a) a.begin(), a.end()
 
 struct SA {
   std::string s;
@@ -74,4 +69,3 @@ struct SA {
     }
   }
 };
-

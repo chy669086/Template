@@ -1,7 +1,4 @@
-#include <algorithm>
-#include <vector>
 
-using std::vector;
 
 struct HLD {
   int n;

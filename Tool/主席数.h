@@ -1,8 +1,4 @@
 
-#include <vector>
-
-namespace Tool {
-using std::vector;
 // 主席树
 template <class T>
 class EXTree {
@@ -86,4 +82,3 @@ private:
     }
   }
 };
-} // namespace Tool

@@ -1,14 +1,9 @@
-#include <vector>
-
-using std::vector;
-
-namespace Tool {
 
 template <class T>
-class BinaryIndexedTrees {
+class Fenwick {
 public:
-  BinaryIndexedTrees(int n) : c(n + 1), n(n) {}
-  BinaryIndexedTrees(const vector<T> &a) {
+  Fenwick(int n) : c(n + 1), n(n) {}
+  Fenwick(const vector<T> &a) {
     n = a.size() - 1;
     c.resize((n + 1));
     build(a);
@@ -44,4 +39,3 @@ private:
     }
   }
 };
-} // namespace Tool

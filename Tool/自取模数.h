@@ -1,13 +1,4 @@
 
-
-#include <cassert>
-#include <ctime>
-#include <format>
-#include <iostream>
-#include <vector>
-
-using i64 = long long;
-
 constexpr i64 ex_gcd(i64 a, i64 b, i64 &x, i64 &y) {
   if (b == 0) {
     x = 1, y = 0;

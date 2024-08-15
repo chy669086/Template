@@ -1,10 +1,3 @@
-#include <queue>
-#include <vector>
-
-using i64 = long long;
-using std::vector;
-
-#define all(a) a.begin(), a.end()
 
 namespace Dinic {
 
