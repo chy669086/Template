@@ -17,6 +17,16 @@ void debug(const T &a) {
 }
 
 template <typename T>
+  requires requires() {
+    T::first;
+    T::second;
+  }
+void debug(const T &a) {
+  std::cout << a.first << " " << a.second;
+  std::cout << "\n";
+}
+
+template <typename T>
   requires requires(T p) {
     p.begin();
     p.end();
@@ -27,15 +37,5 @@ void debug(const T &a) {
   for (auto &x : a) {
     debug(x);
   }
-  std::cout << "\n";
-}
-
-template <typename T>
-  requires requires() {
-    T::first;
-    T::second;
-  }
-void debug(const T &a) {
-  std::cout << a.first << " " << a.second;
   std::cout << "\n";
 }
