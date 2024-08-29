@@ -1,9 +1,4 @@
 
-
-#include <vector>
-
-using std::vector;
-
 template <class Info, class Tag>
 class SegmentTree {
 public:
@@ -12,7 +7,7 @@ public:
     init(n);
   }
   template <class T>
-  SegmentTree(vector<T> &a) {
+  SegmentTree(std::vector<T> &a) {
     init(a);
   }
 
@@ -24,7 +19,7 @@ public:
   }
 
   template <class T>
-  void init(vector<T> &a) {
+  void init(std::vector<T> &a) {
     n = a.size() - 1;
     infos.assign(4 * a.size(), Info{});
     tags.assign(4 * a.size(), Tag{});
@@ -41,8 +36,8 @@ public:
 
 private:
   int n;
-  vector<Info> infos;
-  vector<Tag> tags;
+  std::vector<Info> infos;
+  std::vector<Tag> tags;
 
   void pushup(int z) {
     infos[z] = infos[z << 1] + infos[z << 1 | 1];
@@ -86,7 +81,7 @@ private:
   }
 
   template <class T>
-  void build(int z, int l, int r, vector<T> &a) {
+  void build(int z, int l, int r, std::vector<T> &a) {
     if (l == r) {
       infos[z] = Info{a[l]};
       return;

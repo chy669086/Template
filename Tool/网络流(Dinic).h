@@ -22,8 +22,8 @@ inline void init(int n, int m) {
 } // namespace Grap
 
 const i64 INF = 0x3f3f3f3f3f3f3f3f;
-vector<i64> d;
-vector<int> now;
+std::vector<i64> d;
+std::vector<int> now;
 int s, t;
 
 inline void init(int n, int m, int _s, int _t) {
