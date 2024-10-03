@@ -77,6 +77,9 @@ i64 dfs(int x, i64 sum) {
       Grap::val[i ^ 1] += k;
       res += k;
       sum -= k;
+      if (sum == 0) {
+        break;
+      }
     }
   }
   return res;
