@@ -228,15 +228,15 @@ struct MInt {
 };
 
 template <class Z>
-struct comb {
+struct Comb {
   int n = 0;
   std::vector<Z> _fac = {1};
   std::vector<Z> _invfac = {1};
   std::vector<Z> _inv = {0};
 
-  comb() = default;
+  Comb() = default;
 
-  comb(int n) {
+  Comb(int n) {
     init(n);
   }
 

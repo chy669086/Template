@@ -21,8 +21,8 @@ private:
   };
   int n;
   int cnt = 0;
-  vector<int> root;
-  vector<node> tree;
+  std::vector<int> root;
+  std::vector<node> tree;
 
   int build(int l, int r) {
     int cur = ++cnt;

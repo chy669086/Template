@@ -7,7 +7,7 @@ constexpr i64 G = 3;
 std::vector<int> tax;
 i64 inv;
 
-static constexpr i64 power(i64 x, i64 y) {
+constexpr i64 power(i64 x, i64 y) {
   i64 res = 1;
   while (y) {
     if (y & 1) {

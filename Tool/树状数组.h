@@ -3,7 +3,7 @@ template <class T>
 class Fenwick {
 public:
   Fenwick(int n) : c(n + 1), n(n) {}
-  Fenwick(const vector<T> &a) {
+  Fenwick(const std::vector<T> &a) {
     n = a.size() - 1;
     c.resize((n + 1));
     build(a);
@@ -27,10 +27,10 @@ public:
   }
 
 private:
-  vector<T> c;
+  std::vector<T> c;
   int n;
 
-  void build(const vector<T> &a) {
+  void build(const std::vector<T> &a) {
     for (int i = 1; i <= n; i++) {
       c[i] += a[i];
       if (i + lowbit(i) <= n) {
