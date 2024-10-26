@@ -1,4 +1,3 @@
-
 template <class Info>
 class SegmentTree {
 public:
@@ -24,8 +23,8 @@ public:
     build(1, 1, a.size() - 1, a);
   }
 
-  void updata(int l, int r, const Info &tag) {
-    update(1, 1, n, l, r, tag);
+  void updata(int pos, const Info &tag) {
+    update(1, 1, n, pos, tag);
   }
 
   Info query(int l, int r) {
@@ -63,17 +62,17 @@ private:
     return query(z << 1, l, mid, s, e) + query(z << 1 | 1, mid + 1, r, s, e);
   }
 
-  void update(int z, int l, int r, int s, int e, const Info &tag) {
-    if (l > e || r < s) {
+  void update(int z, int l, int r, int pos, const Info &tag) {
+    if (l > pos || r < pos) {
       return;
     }
-    if (l >= s && r <= e) {
+    if (l == pos && r == pos) {
       infos[z].apply(tag);
       return;
     }
     int mid = (l + r) >> 1;
-    update(z << 1, l, mid, s, e, tag);
-    update(z << 1 | 1, mid + 1, r, s, e, tag);
+    update(z << 1, l, mid, pos, tag);
+    update(z << 1 | 1, mid + 1, r, pos, tag);
     pushup(z);
   }
 
