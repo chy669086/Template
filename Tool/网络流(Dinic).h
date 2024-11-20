@@ -5,7 +5,7 @@ namespace Grap {
 
 int tot;
 std::vector<int> head, nxt, ver;
-vector<i64> val;
+std::vector<i64> val;
 
 inline void add(int x, int y, i64 z) {
   ver[++tot] = y, nxt[tot] = head[x], head[x] = tot, val[tot] = z;

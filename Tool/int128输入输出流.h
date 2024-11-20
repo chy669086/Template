@@ -1,19 +1,18 @@
 
-
-template <class T>
-inline T read(T &&x = 0) {
+template <class T, class _IS>
+inline T read(T &&x = 0, _IS &is = std::cin) {
   x = 0;
   bool f = 0;
-  char c = std::cin.get();
+  char c = is.get();
   while (c > '9' || c < '0') {
     if (c == '-') {
       f = 1;
     }
-    c = std::cin.get();
+    c = is.get();
   }
   while (c <= '9' && c >= '0') {
     x = (x << 3) + (x << 1) + (c ^ '0');
-    c = std::cin.get();
+    c = is.get();
   }
   if (f) {
     x = -x;
@@ -38,6 +37,6 @@ std::ostream &operator<<(std::ostream &os, const __int128 &a) {
 }
 
 std::istream &operator>>(std::istream &is, __int128 &a) {
-  read(a);
+  read(a, is);
   return is;
 }

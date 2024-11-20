@@ -282,6 +282,8 @@ struct Comb {
 
 using Z = MInt<>;
 
+Comb<Z> comb;
+
 template <>
 struct std::formatter<Z, char> {
   bool quoted = false;
